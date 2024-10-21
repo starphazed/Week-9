@@ -1,6 +1,5 @@
 import express from 'express';
 
-import fetch from 'node-fetch'
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -19,7 +18,6 @@ const cats = {
     }
 };
 
-// Route to get cats based on temperament
 app.get('/', (req, res) => {
     const requestedTemperament = req.query.temperament;
     const matchingCats = [];
@@ -34,20 +32,15 @@ app.get('/', (req, res) => {
     res.send(matchingCats);
 });
 
-// Route to get information about a specific cat breed using substring
 app.get('/cat/:breed', (req, res) => {
     console.log(req.params.breed.substring(1));
 
     for (const breed in cats) {
-        if (breed === req.params.breed.substring(1)) {
+        if (breed === req.params.breed) {
             console.log(`The temperament of this breed is ${cats[breed].temperament}`);
             res.send(`The temperament of this breed is ${cats[breed].temperament}`);
-            return; // Exit after sending the response to avoid sending multiple responses
         }   
     }
-
-    // If no match is found, send a default response
-    res.send(`Sorry, we don't have information about the breed ${req.params.breed.substring(1)}.`);
 });
 
 app.listen(port, () => {
